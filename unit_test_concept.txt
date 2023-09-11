@@ -1,0 +1,55 @@
+==== PRUABA UNITARIA
+---- Una prueba unitaria es una tecnica para comprobar si esta funcionando de manera correcta un pequeño
+---- bloque de codigo independiente (que no depende de otras piezas de codigo del proyecto) que en la mayoria de casos podria ser una funcion 
+---- Son una pieza de examen para verificar que una pieza de codigo cumple con ciertas reglas de negocio y afirmar un resultado esperado
+
+==== TDD desarrollo dirigido por pruebas de software o Test-Driver Development (TDD)
+---- es una practica de ingenieria de software que involucra otras practicas: Escribir las pruebas primero 
+---- (Test First Development) y Refactorizacion (Refactoring)
+
+==== Procesos de TDD
+
+---- 1 Escribir un caso de prueba (Test First):
+---- Segun los requisitos escriba un caso de prueba
+
+---- 2 Escribir el código mínimo para pasar la prueba (Write Code):
+
+---- 3 Ejecutar la prueba (Run Test)
+---- Luego, se ejecuta la prueba automatizada. Si el código escrito en el paso anterior es correcto, 
+---- la prueba debe pasar sin errores. Si falla, se debe realizar una corrección en el código hasta que la prueba sea exitosa.
+
+---- 4 Refactorizar (Refactor)
+---- Después de que la prueba pase, es el momento de mejorar el código sin cambiar su comportamiento.
+---- Esto implica hacer que el código sea más limpio, eficiente y mantenible.
+
+---- 5 Volver a ejecutar la prueba (Run Test Again):
+---- Después de realizar la refactorización, se debe ejecutar la prueba nuevamente para asegurarse de que todas las modificaciones no hayan introducido errores.
+---- Si la prueba falla en este punto, se deben realizar más correcciones y pruebas adicionales.
+
+---- 6 Repetir el ciclo:
+---- El ciclo de escribir pruebas, escribir código, ejecutar pruebas y refactorizar se repite continuamente.
+
+
+==== JUnit
+---- Junit es una libreria para poder escribir pruebas unitarias
+
+==== Mockito 
+---- Es una libreria de java que permite simular la funcionalidad de una clase de manera dinamica
+---- aislando las dependencias de otra clase para simular la funcionalidad de la clase.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
