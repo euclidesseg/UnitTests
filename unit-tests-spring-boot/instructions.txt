@@ -1,0 +1,23 @@
+Luego de que ya hicimos toda la api rest 
+lo siguiente sera implementar nuestros pruebas para cada capa de nuestra aplicacion.
+
+--- Creamos un paquete o carpeta llamado repositories eso es para agregar
+--- las clases tests unicamente para los repositorios y entidades que tengamos
+
+=== Antes de continuar veamos que es BDD
+
+--- BDD es Behavior Driven Development, o lo que es lo mismo en español, 
+--- desarrollo guiado por comportamiento. 
+--- Es un proceso de software ágil que busca la colaboración y entendimiento entre desarrolladores, 
+--- gestores de proyecto y equipo de negocio.
+
+--- Tiene relación directa con el testing, pues el BDD surge directamente del TDD o desarrollo guiado por pruebas.
+--- Pero a diferencia del TDD, el BDD define las pruebas centradas en el usuario y el 
+--- comportamiento del sistema y no en las funcionalidades de este. En otras palabras, 
+--- el BDD describe las pruebas en un lenguaje natural que entienden todos los equipos de un proyecto, 
+--- y no únicamente los programadores.
+
+--- EL BDD se sentra en tres elementos
+=== Given: Hace referencia a las precondiones para que se puedan ejecutar las distintas acciones.
+=== When:  Son las condiciones de las acciones a ejecutar.
+=== Then:  Es el resultado de las acciones ejecutadas.
