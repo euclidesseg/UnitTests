@@ -20,6 +20,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.List;
 import java.util.Optional;
 
 // esta anotacion nos indica que vamos a trabajar con mockito y para usar unas extenciones que usan JUnit 5
@@ -76,11 +77,11 @@ public class TestEmpleadoService {
         //given  ==  para usarlo debemos importar una dependencia de mockito
         //dato este empleado consultado
         given(empleadoReposotory.findByEmail(this.empleado.getEmail()))
-                .willReturn(Optional.of(empleado));
+                .willReturn(Optional.of(empleado)); // retornara un empleado
 
         //wen
         // cuando yo intente guardar este mepleado que ya existe
-        assertThrows(ResourceNotFountException.class,() ->{
+        assertThrows(ResourceNotFountException.class,() -> {
             this.empleadoServiceImplementation.saveEmpleado(empleado);
         });
         //then
@@ -102,4 +103,24 @@ public class TestEmpleadoService {
     * Las anotaciones given de mockitose estan usando unicamente para simular una dependencia es decir
     * al repositorio esto devido a que el servicio depende del repositorio y por ende se aisla al repositorio
     * original del componente de servicio durante la prueba  */
+
+    @DisplayName("Test para listar a los empleados")
+    @Test
+    public void testListarEmpleados(){
+        //given
+        //dado este empleado que yo construyo y que luego guardo con la simulacion de un repositorio
+        EmpleadoModel empleado1 = EmpleadoModel.builder()
+                .id(2l)
+                .nombre("Mariana")
+                .email("mariana@gmail.com")
+                .build();
+        given(this.empleadoReposotory.findAll()).willReturn(List.of(empleado, empleado1)); // simulacion que retornara dos empleados
+        //when
+        //cuando yo consulte estps dos empleados
+        List<EmpleadoModel> empleados = this.empleadoServiceImplementation.getAllEmpleado();
+        //then
+        //espero que la lista no sea nula y sea igual a dos
+        assertThat(empleados).isNotNull();
+        assertThat(empleados.size()).isEqualTo(2);
+    }
 }

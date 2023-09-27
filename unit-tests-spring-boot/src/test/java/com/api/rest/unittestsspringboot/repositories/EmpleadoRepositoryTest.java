@@ -80,7 +80,7 @@ public class EmpleadoRepositoryTest {
         // then
         assertThat(listaEmpleados).isNotNull();
         assertThat(listaEmpleados.size()).isEqualTo(2);
-        // espero obtener
+        // espero obtener que la lista sea igual a dos
 
     }
 
