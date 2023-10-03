@@ -121,7 +121,7 @@ public class EmpleadoRepositoryTest {
         //dado este empleado guardado
         this.empleadoReposotory.save(this.empleado);
         // when
-        // cuando yo elimine empleado
+        // cuando yo elimine ese empleado
         this.empleadoReposotory.deleteById(this.empleado.getId());
         Optional<EmpleadoModel> empleadoOptional = this.empleadoReposotory.findById(this.empleado.getId());
         // then

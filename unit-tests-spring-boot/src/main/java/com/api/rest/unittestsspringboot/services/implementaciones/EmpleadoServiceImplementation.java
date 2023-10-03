@@ -44,7 +44,7 @@ public class EmpleadoServiceImplementation implements EmpleadoServiceInterface{
     @Override
     public boolean deleteEmpleado(Long id){
         try{
-            this.empleadoReposotory.delete(null);
+            this.empleadoReposotory.deleteById(id);
             return true;
         }catch(RuntimeException err){
             return false;
