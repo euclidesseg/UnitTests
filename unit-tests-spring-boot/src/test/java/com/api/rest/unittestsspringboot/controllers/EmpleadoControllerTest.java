@@ -68,11 +68,17 @@ public class EmpleadoControllerTest {
     
 
               
-              response.andDo(print())
-                      .andExpect(status().isCreated())
+              response.andDo(print())//imprime la respuesta HTTP en la consola para fines de depuración.
+                      .andExpect(status().isCreated())//verifica que la respuesta HTTP tenga un código de estado 201, que generalmente indica que la creación se realizó con éxito.
                       .andExpect(jsonPath("$.nombre", is(empleado.getNombre())))
                       .andExpect(jsonPath("$.apellido", is(empleado.getApellido())))
                       .andExpect(jsonPath("$.email", is(empleado.getEmail())));
+
+                      /*
+                      .andExpect
+                       verifica que los atributos del objeto JSON devuelto en la respuesta coincidan con los atributos del objeto empleado que se creó inicialmente.
+                       En este caso, se verifica que los atributos nombre, apellido y email del JSON de respuesta sean iguales a los del objeto empleado.
+                      */
                       
             }
 
