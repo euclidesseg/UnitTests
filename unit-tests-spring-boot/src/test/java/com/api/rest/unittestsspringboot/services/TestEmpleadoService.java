@@ -102,7 +102,7 @@ public class TestEmpleadoService {
      */
     /*
      * NOTA:
-     * Las anotaciones given de mockitose estan usando unicamente para simular una
+     * Las anotaciones given de mockit ose estan usando unicamente para simular una
      * dependencia es decir
      * al repositorio esto devido a que el servicio depende del repositorio y por
      * ende se aisla al repositorio
