@@ -56,7 +56,10 @@ public class EmpleadoControllerTest {
              // dado este empleado giardado
            given(empleadoServiceImplementation.saveEmpleado(any(EmpleadoModel.class))) //given para aislar el servicio simulado del serviio original 
            .willAnswer((invocation) -> invocation.getArgument(0));
-
+            /*
+            El anterior método dice que cuando se llame al método saveEmpleado del servicio con cualquier instancia de EmpleadoModel (EmpleadoModel.class),
+            debe devolver la misma instancia de EmpleadoModel. Esto simula el proceso de guardar un empleado en la base de datos.
+            */
            //when
            ResultActions response = mockMvc.perform(post("/api/empleados") //el post me lo permite usar esta importacion MockMvcRequestBuilders.*;
               .contentType(org.springframework.http.MediaType.APPLICATION_JSON)
