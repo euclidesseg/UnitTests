@@ -5,19 +5,22 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
-import static org.mockito.BDDMockito.given;
+import static org.mockito.BDDMockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.mockito.ArgumentMatchers.any;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import org.apache.catalina.connector.Response;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
@@ -119,4 +122,149 @@ public class EmpleadoControllerTest {
     .andDo(print())//imprimo la respuesta
     .andExpect(jsonPath("$.size()", is(listaEmpleados.size())));  // verifico que la respuesta si sea del mismo tamaño de la lista
   }
+
+
+
+  // Test para obtener un empleado por id
+
+  @Test
+  public void testObtenerEmpleadoPorId() throws Exception{
+    //given
+    long empleadoId = 1L;
+    EmpleadoModel empleado = EmpleadoModel.builder()
+        .nombre("Euclides")
+        .apellido("Perez")
+        .email("eperez@gmail.com")
+        .build();
+    given(empleadoServiceImplementation.getEmpleadoById(empleadoId)).willReturn(Optional.of(empleado));
+    // Esta línea indica que el método getEmpleadoById() devolverá un objeto Optional que contiene el empleado creado anteriormente.
+
+    //wen 
+    ResultActions response = mockMvc.perform(get("/api/empleados/{id}", empleadoId));
+
+    // then
+    response.andExpect(status().isOk())
+    .andDo(print())
+    .andExpect(jsonPath("$.nombre", is(empleado.getNombre())))
+    .andExpect(jsonPath("$.apellido", is(empleado.getApellido())))
+    .andExpect(jsonPath("$.email", is(empleado.getEmail())));
+  }
+
+
+  // Test para retornar un empleado vacion
+  @Test
+  void objenerEmpleadoVaco() throws Exception{
+     //given
+    long empleadoId = 1L;
+    EmpleadoModel empleado = EmpleadoModel.builder()
+        .nombre("Euclides")
+        .apellido("Perez")
+        .email("eperez@gmail.com")
+        .build();
+    given(empleadoServiceImplementation.getEmpleadoById(empleadoId)).willReturn(Optional.empty());
+    // Esta línea indica que el método getEmpleadoById() devolverá un opcional vacio
+
+    //wen 
+    ResultActions response = mockMvc.perform(get("/api/empleados/{id}", empleadoId));
+
+    // then
+    response.andExpect(status().isNotFound()).andDo(print());
+  }
+
+
+
+
+  // Test para actualizar un empleado
+  @Test
+  void actualizarEmpleado()throws Exception{
+
+    //given
+    long empleadoId = 1l;
+    EmpleadoModel empleadoGuardado = EmpleadoModel.builder()
+      .nombre("Euclides")
+      .apellido("perez")
+      .email("e.perez@gmail.com")
+      .build();
+    EmpleadoModel empleadoActualizado = EmpleadoModel.builder()
+      .nombre("dilan")
+      .apellido("perez")
+      .email("d.perez@gmail.com")
+      .build();
+
+      given(empleadoServiceImplementation.getEmpleadoById(empleadoId)).willReturn(Optional.empty()); // establezco que sera nulo 
+      given(empleadoServiceImplementation.updateEmpleado(any(EmpleadoModel.class)))
+        .willAnswer((invocation) -> invocation.getArgument(0));
+
+
+    // when
+    ResultActions response = mockMvc.perform(put("/api/empleados/{id}", empleadoId)
+      .contentType(MediaType.APPLICATION_JSON)
+      .content(objectMapper.writeValueAsString(empleadoActualizado)));
+
+
+    // then
+
+    response.andExpect(status().isNotFound())
+      .andDo(print());
+      
+  }
+
+
+
+
+  // Test para actualizar un empleado cundo no es encontrado
+  @Test
+  void actualizarEmpleadoNoencontrado()throws Exception{
+
+    //given
+    long empleadoId = 1l;
+    EmpleadoModel empleadoGuardado = EmpleadoModel.builder()
+      .nombre("Euclides")
+      .apellido("perez")
+      .email("e.perez@gmail.com")
+      .build();
+    EmpleadoModel empleadoActualizado = EmpleadoModel.builder()
+      .nombre("dilan")
+      .apellido("perez")
+      .email("d.perez@gmail.com")
+      .build();
+
+      given(empleadoServiceImplementation.getEmpleadoById(empleadoId)).willReturn(Optional.of(empleadoGuardado)); // busco el emplaeado 
+      given(empleadoServiceImplementation.updateEmpleado(any(EmpleadoModel.class)))
+        .willAnswer((invocation) -> invocation.getArgument(0));
+
+
+    // when
+    ResultActions response = mockMvc.perform(put("/api/empleados/{id}", empleadoId)
+      .contentType(MediaType.APPLICATION_JSON)
+      .content(objectMapper.writeValueAsString(empleadoActualizado)));
+
+
+    // then
+
+    response.andExpect(status().isOk())
+      .andDo(print())
+      .andExpect(jsonPath("$.nombre", is(empleadoActualizado.getNombre())))
+      .andExpect(jsonPath("$.apellido", is(empleadoActualizado.getApellido())))
+      .andExpect(jsonPath("$.email", is(empleadoActualizado.getEmail())));
+      
+  }
+
+  @Test
+  void testEliminarEmpleado() throws Exception {
+
+    // given
+    Long empleadoId = 1L;
+    
+    given(empleadoServiceImplementation.deleteEmpleado(empleadoId)).willReturn(true);// willDoNothing indica que no se hara nada luego de eliminar un empleado
+
+    // When
+    ResultActions response = mockMvc.perform(delete("/api/empleados/{id}",empleadoId));
+
+    // then
+    response.andExpect(status().isOk())
+            .andDo(print());
+  }
+
 }
+
