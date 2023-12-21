@@ -1,0 +1,25 @@
+===== Test Rest Templeate ===== 
+RestTemplate es una clase en Spring Framework que proporciona una forma conveniente para 
+interactuar con servicios web RESTful. Al escribir pruebas unitarias para código que utiliza RestTemplate, a menudo es útil simular las llamadas a servicios web 
+en lugar de realizar llamadas reales a través de la red
+
+==== WebTestClient ==== 
+WebTestClient es una clase proporcionada por Spring WebFlux para realizar pruebas de integración
+y funcionales en aplicaciones reactivas. A diferencia de RestTemplate, 
+que es síncrono y está diseñado para aplicaciones basadas en servlets, 
+WebTestClient está diseñado específicamente para trabajar con aplicaciones 
+reactivas y es más adecuado para pruebas en el contexto de Spring WebFlux.
+
+Operaciones No BLOQUEANTES: WebTestClient está diseñado para trabajar con aplicaciones r
+eactivas y operaciones no bloqueantes. Cuando realizas solicitudes a tu aplicación utilizando WebTestClient, 
+estás trabajando de manera asincrónica. Las operaciones no bloqueantes permiten a la aplicación manejar más 
+solicitudes concurrentes sin necesidad de tener un hilo dedicado para cada solicitud.
+
+
+En resumen estas dos clases se usan para relizar pruebas unitarias cuando nuestro proyecto se esta compilando.
+
+para esto vamos a usar dos puertos uno para la aplicacion que estara ejecutandose y otra para nuestras pruebas unitarias
+en este caso estaremos trabajando con una base de datos real y no envevida.
+
+
+=== 1 Creamos dentro del controlador el una clase para tesTRestTemplate
