@@ -1,5 +1,15 @@
 package com.api.rest.unittestsspringboot.controllers;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.springframework.http.MediaType.APPLICATION_JSON;
+
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -7,13 +17,9 @@ import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import static org.junit.jupiter.api.Assertions.*;
-import static org.springframework.http.MediaType.*;
-
-import java.util.Arrays;
-import java.util.List;
 
 import com.api.rest.unittestsspringboot.models.EmpleadoModel;
 
@@ -70,5 +76,50 @@ public class EmpleadoControllerTestRestTemplate {
         assertEquals("Mariana", empleados.get(0).getNombre());
         assertEquals("Perez", empleados.get(0).getApellido());
         assertEquals("mariana@gmail.com", empleados.get(0).getEmail());
+    }
+
+    @Test
+    @Order(3)
+    void testObtenerEmpleado(){
+         ResponseEntity<EmpleadoModel> respuesta = testRestTemplate.getForEntity("http://localhost:8080/api/empleados/1", EmpleadoModel.class);
+         EmpleadoModel empleado = respuesta.getBody();
+
+        assertEquals(HttpStatus.OK, respuesta.getStatusCode());
+        assertEquals(APPLICATION_JSON, respuesta.getHeaders().getContentType());
+
+        assertNotNull(empleado);
+        assertEquals(1l, empleado.getId());
+        assertEquals("Mariana", empleado.getNombre());
+        assertEquals("Perez", empleado.getApellido());
+        assertEquals("mariana@gmail.com", empleado.getEmail());
+    }
+
+    @Test
+    @Order(4)
+    void testEliminarEmpleado(){
+         ResponseEntity<EmpleadoModel[]> respuesta = testRestTemplate.getForEntity("http://localhost:8080/api/empleados", EmpleadoModel[].class);
+         List<EmpleadoModel> empleados = Arrays.asList(respuesta.getBody());
+         assertEquals(1, empleados.size()); // comprovamos que el tamaño de la lista sea de 1  los datos de la lista son agregados desde el body de la respuesta
+
+        Map<String, Long> pathVariable = new HashMap<>();
+        pathVariable.put("id", 1l);
+        ResponseEntity<Void> exchange = testRestTemplate.exchange("http://localhost:8080/api/empleados/{id}", HttpMethod.DELETE,null, Void.class, pathVariable);
+        // con exchange estamos eliminando el el empleado yq que le pasamos el id del empleado creado como objeto
+
+
+        assertEquals(HttpStatus.OK, exchange.getStatusCode());
+        assertFalse(exchange.hasBody());
+        // comrovamos que todo este ok|
+
+        respuesta = testRestTemplate.getForEntity("http://localhost:8080/api/empleados", EmpleadoModel[].class);
+        empleados = Arrays.asList(respuesta.getBody());
+        assertEquals(0, empleados.size());
+        // debido a que eliminamos el empleado comprovamos qu eel listado sea de 0 que ya no halla nada
+
+        ResponseEntity<EmpleadoModel> respuestaDetalle = testRestTemplate.getForEntity("http://localhost:8080/api/empleados/2", EmpleadoModel.class);
+        assertEquals(HttpStatus.NOT_FOUND, respuestaDetalle.getStatusCode());
+        assertFalse(respuestaDetalle.hasBody()
+        // 
+        );
     }
 }
