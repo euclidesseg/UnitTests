@@ -23,3 +23,15 @@ en este caso estaremos trabajando con una base de datos real y no envevida.
 
 
 === 1 Creamos dentro del controlador el una clase para tesTRestTemplate
+
+=============================================================================================================
+para trabajar ahora con webTestClient vamos y creamos una nueva clase llamada EmpleadoContreollerWebTestClient
+y agregamos la dependencia 
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-webflux</artifactId>
+    <scope>test</scope>
+</dependency>
+
+
+// No hay mucha diferencia ya que en si vamos a usar las mismas anotaciones
