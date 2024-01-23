@@ -40,15 +40,11 @@ public class EmpleadoControllerTest {
    * recordemos que en el test del servicio creamos el mock para el repositorio
    * por su dependencia
    */
-  @MockBean
+  @MockBean // agrega objetos simulados a nuestra aplicacion
   private EmpleadoServiceImplementation empleadoServiceImplementation;
 
-  /*
-   * es una clase proporcionada por la biblioteca Jackson en Java que se utiliza
-   * para convertir objetos Java en formato JSON y viceversa.
-   */
   @Autowired
-  private ObjectMapper objectMapper;
+  private ObjectMapper objectMapper; //es una clase proporcionada por la biblioteca Jackson en Java que se utiliza para convertir objetos Java en formato JSON y viceversa.
 
   @Test
   void testGuardarEmpleado() throws JsonProcessingException, Exception {
@@ -59,9 +55,8 @@ public class EmpleadoControllerTest {
         .email("euclides@gmail.com")
         .build();
 
-    // dado este empleado giardado
-    given(empleadoServiceImplementation.saveEmpleado(any(EmpleadoModel.class))) // given para aislar el servicio
-                                                                                // simulado del serviio original
+    // dado este empleado guardado
+    given(empleadoServiceImplementation.saveEmpleado(any(EmpleadoModel.class))) // given para aislar el servicio simulado del serviio original
         .willAnswer((invocation) -> invocation.getArgument(0));
     /*
      * El anterior método dice que cuando se llame al método saveEmpleado del
@@ -70,8 +65,8 @@ public class EmpleadoControllerTest {
      * guardar un empleado en la base de datos.
      */
     // when
-    ResultActions response = mockMvc.perform(post("/api/empleados") // el post me lo permite usar esta importacion
-                                                                    // MockMvcRequestBuilders.*;
+    ResultActions response = mockMvc.perform(post("/api/empleados") // para ser claros este metodo post esta llamando a las lineas de codigo 59 y 60 que son la simulacion del servicio que guarda el empleado
+    // el post me lo permite usar esta importacion   // MockMvcRequestBuilders.*;
         .contentType(org.springframework.http.MediaType.APPLICATION_JSON)
         .content(objectMapper.writeValueAsString(empleado)));// convierte al objeto en json
 
@@ -113,7 +108,7 @@ public class EmpleadoControllerTest {
 
     //when
     // cuando yo mande la peticion al metodo getAllEmpleados me debe retornar la lista de empleados creada
-    ResultActions response = mockMvc.perform(get("/api/empleados"));
+    ResultActions response = mockMvc.perform(get("/api/empleados")); // igual que el anterior este get de mockMvc llaama al objeto simulado de la linea 106
  
     //then
     //entonces verifico que el estado se ok(exitoso)
@@ -152,7 +147,7 @@ public class EmpleadoControllerTest {
 
   // Test para retornar un empleado vacion
   @Test
-  void objenerEmpleadoVaco() throws Exception{
+  void objenerEmpleadoVacio() throws Exception{
      //given
     long empleadoId = 1L;
     EmpleadoModel empleado = EmpleadoModel.builder()
